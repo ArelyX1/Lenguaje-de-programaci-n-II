@@ -1,0 +1,59 @@
+1. ¿Qué es la programación orientada a objetos (POO)?
+   La POO se basa en objetos, entidades con datos (atributos) y funciones (métodos), facilitando el desarrollo y comprensión del software.
+
+2. ¿Qué es la abstracción en POO?
+   La abstracción identifica características esenciales de objetos, ignorando detalles irrelevantes, eficientemente representando entidades en el software.
+
+3. ¿Cuál es la diferencia entre una clase y un objeto?
+   Una clase define la estructura y comportamiento de un objeto, mientras que un objeto es una instancia de esa clase en tiempo de ejecución.
+
+4. ¿Qué son los atributos de una clase?
+   Los atributos son variables de una clase que representan características de los objetos y definen su estado.
+
+5. ¿Qué son los métodos de una clase?
+   Los métodos son funciones de una clase que operan sobre los atributos de los objetos, realizando acciones o cálculos.
+
+6. ¿Cómo se crea un objeto en POO?
+   Se crea un objeto mediante la instanciación de una clase usando `new`, opcionalmente con argumentos para inicializarlo.
+
+7. ¿Cuál es la diferencia entre una variable y un atributo?
+   Una variable es un espacio de memoria con nombre, mientras que un atributo es una variable que describe las características de una clase.
+
+8. ¿Qué es el encapsulamiento en POO?
+   El encapsulamiento oculta los detalles internos de un objeto, exponiendo solo una interfaz pública para interactuar.
+
+9. ¿Qué es la visibilidad de miembros en POO?
+   La visibilidad determina qué partes del programa pueden acceder a los miembros de una clase (público, protegido, privado).
+
+10. ¿Qué es una clase abstracta en POO?
+    Una clase abstracta no se puede instanciar directamente y generalmente contiene métodos abstractos, dejando su implementación a las clases derivadas.
+
+11. ¿Qué es una interfaz en POO?
+    Una interfaz define un conjunto de comportamientos que una clase puede implementar, promoviendo la interoperabilidad y reutilización.
+
+12. ¿Cómo se implementa la herencia en POO?
+    La herencia permite que una clase herede atributos y métodos de otra, fomentando la reutilización y extensión del código.
+
+13. ¿Qué es una sobrecarga de métodos en POO?
+    La sobrecarga de métodos permite definir varios métodos con el mismo nombre pero diferentes parámetros.
+
+14. ¿Qué es una sobreescritura de métodos en POO?
+    La sobreescritura de métodos permite a una clase derivada proporcionar una implementación específica para un método definido en la clase base.
+
+15. ¿Qué son los métodos estáticos en POO?
+    Los métodos estáticos pertenecen a la clase en lugar de instancias individuales y pueden ser llamados directamente.
+
+16. ¿Qué son los arreglos de objetos en POO?
+    Los arreglos de objetos son estructuras de datos que contienen instancias de una clase, facilitando la manipulación de colecciones de objetos.
+
+17. ¿Cómo se utiliza un método get en POO?
+    Un método get se utiliza para obtener el valor de un atributo de un objeto.
+
+18. ¿Cómo se utiliza un método set en POO?
+    Un método set se utiliza para modificar el valor de un atributo de un objeto.
+
+19. ¿Qué es el polimorfismo en POO?
+    El polimorfismo permite a objetos de diferentes clases responder al mismo mensaje de manera distinta, facilitando la flexibilidad del código.
+
+20. ¿Por qué es importante la POO en la programación de software?
+    La POO facilita el diseño modular y mantenible del software, permitiendo la reutilización y modelización de problemas del mundo real.
