@@ -142,22 +142,6 @@ int main() {
     cout << gato.getEdad() << endl;
     cout << gato.getTipoPelo() << endl;
     gato.hacerSonido();
-
-    do{
-        int opcion;
-        menu();
-        cout << "Ingrese una opción: ";
-        cin >> opcion;
-        switch (opcion)
-        {
-        case 1:
-        
-            break;
-        
-        default:
-            break;
-        }
-    }while();
 }
 
 void menu(){
