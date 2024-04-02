@@ -4,14 +4,6 @@
 using namespace std;
 
 chrono::system_clock::time_point valida_fecha(int, int, int, int, int, int);
-/*
-class Tarea{
-    protected:
-        string descripción;
-        
-
-
-};*/
 
 int main(){
     int anio, mes, dia, hora, min, seg;
@@ -20,9 +12,11 @@ int main(){
     try{
         chrono::system_clock::time_point datoTiempo = valida_fecha(anio, mes, dia, hora, min, seg);
         time_t tiempo = chrono::system_clock::to_time_t(datoTiempo);
+        cout << "Fecha y tiempo válidos: " << ctime(&tiempo);
     } catch (const invalid_argument& e){
-        cerr << "ERROR" << e.what() << endl;
+        cerr << "ERROR " << e.what() << endl;
     }
+
 }
 chrono::system_clock::time_point valida_fecha(int anio, int mes, int dia, int hora, int min, int seg){
     tm tiempoinfo = {};
