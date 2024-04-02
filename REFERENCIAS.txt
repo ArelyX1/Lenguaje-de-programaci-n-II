@@ -1,0 +1,4 @@
+https://es.stackoverflow.com/questions/193829/porque-es-necesario-usar-el-comando-cin-ignore-despu%C3%A9s-de-usar-cin-y-lue#:~:text=Puede%20ser%20que%20si%20alguien,l%C3%ADnea%20o%20hasta%20x%20caracteres.
+https://es.stackoverflow.com/questions/532035/duda-sobre-palabra-virtual-c
+https://www.youtube.com/watch?v=OfONl3XyZ-I
+https://es.stackoverflow.com/questions/150172/override-tostring-en-una-herencia-de-clases-de-c#:~:text=override%20es%20una%20palabra%20reservada,detectar%20inconsistencias%20al%20sobreescribir%20funciones.
