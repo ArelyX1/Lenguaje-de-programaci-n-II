@@ -6,7 +6,7 @@
 using namespace std;
 
 int menu();
-int menu_yape();
+void iniciar_banco();
 int menu_plin();
 int menu_banco();
 void crear_banco();
@@ -169,7 +169,7 @@ int main(){
             do{
                 cout << "Ingrese el banco que desea concetar con Yape (S) Iniciar Sesion (N) Registrarse: ";
                 cin >> op;
-                if (op == 'S' || op == 's')  menu_yape();
+                if (op == 'S' || op == 's')  iniciar_banco();
                 else if (op == 'N' || op == 'n' ) crear_banco();
                 else continue;
                 break;  
@@ -193,9 +193,9 @@ int menu(){
     return opcion;
 }
 
-int menu_yape(){
-    cout << "Ingrese su DNI para iniciar sesión: ";
+void iniciar_banco(){
     int dni;
+    cout << "Ingrese su DNI para iniciar sesión: ";
     cin >> dni;
     for (int i = 0; i < bancos.size(); i++){
         if (bancos[i] -> getDni() == dni){
@@ -207,8 +207,8 @@ int menu_yape(){
 }
 
 void crear_banco(){
+    int dni; 
     cout << "Ingrese su DNI para registrarse al banco: ";
-    int dni;
     cin >> dni;
     Banco *banco = new Banco(dni);
     bancos.push_back(banco);
