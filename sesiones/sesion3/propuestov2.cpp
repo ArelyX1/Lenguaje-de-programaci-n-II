@@ -10,15 +10,16 @@
 #include <cctype>
 using namespace std;
 
+//Usuario, proyecto, archivos, comentarios; gestionar, agregar, compartir
 chrono::system_clock::time_point valida_fecha(int, int, int);
-class IProyecto {
+class IProyecto{
     public:
         virtual void crear(string nomb, string descrip) = 0;
         virtual void eliminar() = 0;
         virtual ~IProyecto(){};
 };
 
-class Usuario {
+class Usuario{
     protected:
         char id[20];
     private:
@@ -120,54 +121,7 @@ int main(){
     time_t tiempo = chrono::system_clock::to_time_t(valida_fecha(1, 10, 10));
     struct tm *timeinfo = localtime(&tiempo);
     cout << "Fecha: " << put_time(timeinfo, "%B %dth, %I%p") << endl;
-
-    int option;
-    do {
-        cout << "\nMenu:\n";
-        cout << "1. Crear proyecto\n";
-        cout << "2. Eliminar proyecto\n";
-        cout << "3. Agregar archivo a proyecto\n";
-        cout << "4. Ver fecha de entrega\n";
-        cout << "5. Ver archivos de proyecto\n";
-        cout << "6. Salir\n";
-        cout << "Ingrese su opcion: ";
-        cin >> option;
-        cin.ignore();
-
-        Usuario user("123456", "password");
-        try {
-            user.login("123456", "password");
-            switch (option) {
-                case 1:
-                    // Call the function to create a project
-                    break;
-                case 2:
-                    // Call the function to delete a project
-                    break;
-                case 3:
-                    // Call the function to add a file to a project
-                    break;
-                case 4:
-                    // Call the function to display the project's due date
-                    break;
-                case 5:
-                    // Call the function to display the files in a project
-                    break;
-                case 6:
-                    cout << "Saliendo del programa...\n";
-                    break;
-                default:
-                    cout << "Opcion invalida. Intente de nuevo.\n";
-            }
-            user.logout();
-        } catch (const invalid_argument& e) {
-            cerr << "Error: " << e.what() << endl;
-        }
-    } while (option != 6);
-
-    return 0;
 }
-
 chrono::system_clock::time_point valida_fecha(int mes, int dia, int hora){
     tm tiempo ={};
     tiempo.tm_year = 2024 - 1900;   
@@ -176,3 +130,5 @@ chrono::system_clock::time_point valida_fecha(int mes, int dia, int hora){
     tiempo.tm_hour = hora;
     time_t tiempo_t = mktime(&tiempo);
     if(tiempo_t == -1) throw invalid_argument("Fecha y tiempo inválidos");
+    return chrono::system_clock::from_time_t(tiempo_t);
+}
