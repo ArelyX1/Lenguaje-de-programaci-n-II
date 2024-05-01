@@ -1,131 +1,323 @@
-#include "IFormaPago.h"
-#include "Yape.h"
-#include "IDeposito.h"
-#include "Plin.h"
-#include "Banco.h"
-#include "CodigoQr.h"
+#include "validaEnteros.h"
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <stdlib.h>
+#include <vector>
 #include <ctime>
+#include <limits>
 #include <exception>
-
 using namespace std;
 
-void menu();
+int menu();
+int iniciar_bancoYAPE();
+void crear_banco();
+int iniciar_bancoPLIN();
+void opcionesBanco();
+int menu_plin();
+int menu_banco();
+
 class Banco;
 class Plin;
 class Yape;
+class CodigoQr{
+    public:
+        int qr;
 
-float IDeposito::setMonto(){
-    float *monto = 0;
-    float temp;
-    cout << "Ingrese el monto: ";
-    cin >> temp;
-    monto = new float(temp);
-    return *monto;
-}
+        CodigoQr(){
+            qr = (rand() % 9999) + 10000;
+        }
+};
 
-Banco::Banco(float capital, int dni){
-    this -> capital = capital;
-    this -> dni = dni;
-}
-void Banco::getInfo(){
-    cout << "Banco Pepe" << endl;
-    cout << "DNI: " << dni << endl;
-    cout << "Capital: " << capital << endl;
-}
-void Banco::depositarBanco(){
-    capital += setMonto();
-}
-float Banco::depositar(){
-    float temp = capital;
-    capital -=IDeposito::setMonto();
-    return temp - capital;
-}
-Yape::Yape(Banco *banco){
-    this -> cuenta_bancaria = banco;
-    this -> codigo = new CodigoQr();
-}
-void Yape::aumentarSaldo(float monto){
-    capital += monto;
-}
-void Yape::disminuirSaldo(float monto){
-    capital -= monto;
-}
-void Yape::depositar(){
-    capital = cuenta_bancaria -> depositar();
-}
-void Yape::getInfo(){
-    cout << "Yape" << endl;
-    cout << "Codigo QR: " << codigo -> qr << endl;
-    cout << "Capital: " << capital << endl;
-}
-void Yape::escanearQr(int codigo, float cantidad, IFormaPago *otro){
-    if(codigo == otro -> getCodigoqr()){
-        otro -> aumentarSaldo(cantidad);
-        disminuirSaldo(cantidad);
-    }
-    else{
-        cout << "Codigo QR incorrecto" << endl;
-    }
-}
-Yape::~Yape(){
-    delete codigo;
-}
-Plin::Plin(Banco *banco){
-    this -> cuenta_bancaria = banco;
-    this -> codigo = new CodigoQr();
-}
-void Plin::aumentarSaldo(float monto){
-    capital += monto;
-}
-void Plin::disminuirSaldo(float monto){
-    capital -= monto;
-}
-void Plin::depositar(){
-    capital = cuenta_bancaria -> depositar();
-}
-void Plin::getInfo(){
-    cout << "Plin" << endl;
-    cout << "Codigo QR: " << codigo -> qr << endl;
-    cout << "Capital: " << capital << endl;
-}
-void Plin::escanearQr(int codigo, float cantidad, IFormaPago *otro){
-    if(codigo == otro -> getCodigoqr()){
-        otro -> aumentarSaldo(cantidad);
-        disminuirSaldo(cantidad);
-    }
-    else{
-        cout << "Codigo QR incorrecto" << endl;
-    }
-}
-Plin::~Plin(){
-    delete codigo;
-}
+class IFormaPago{
+    protected:
+        float capital = 0;
+        int celular = 0;
+        Banco *cuenta_bancaria;
+        const CodigoQr *codigo;
+
+    public:
+        virtual void aumentarSaldo(float monto) = 0;
+        virtual void disminuirSaldo(float monto) = 0;
+        virtual void depositar() = 0;
+        virtual void escanearQr(int codigo, float cantidad, IFormaPago *otro) = 0;
+        virtual void getInfo() = 0;
+        virtual void depositarCelular(int celular, float cantidad, IFormaPago *otro) = 0;
+        int getCodigoqr(){
+            return codigo -> qr;
+        }
+        int getCelular(){
+            return celular;
+        }
+        virtual ~ IFormaPago(){}
+};
+
+class IDeposito{
+    protected:
+        float setMonto(){
+            float *monto = 0;
+            float temp;
+            cout << "Ingrese el monto: ";
+            cin >> temp;
+            monto = new float(temp);
+            return *monto;
+        }
+};
+
+class Banco : IDeposito{
+    private:
+        float capital = 0;
+        int dni;
+    public:
+        Banco(int dni){
+            this -> capital = 0l;
+            this -> dni = dni;
+        }
+
+        int getDni(){
+            return dni;
+        }
+
+        void getInfo(){
+            cout << "Capital del banco: " << capital << endl;
+        }
+
+        void depositarBanco(){
+            capital += IDeposito::setMonto();
+        }
+        float depositar(){
+            float temp = capital;
+            capital -= IDeposito::setMonto();
+            return temp - capital;
+        }
+};
+
+
+
+class Yape : public IFormaPago{
+    private:
+        void aumentarSaldo(float cantidad) override {
+            capital += cantidad;
+        }
+        void disminuirSaldo(float cantidad) override{
+            capital -= cantidad;
+        }
+    public:
+
+        Yape(Banco *_banco, int _celular){
+            this -> codigo = new CodigoQr();
+            this -> cuenta_bancaria = _banco;
+            this -> celular = _celular;
+        }
+        int getQR(){
+            return codigo -> qr;
+        }
+
+        void depositar() override{
+            capital = cuenta_bancaria->depositar();
+        }
+
+        void getInfo() override {
+            cout << "Capital del yape: " << capital << endl;
+            cuenta_bancaria -> getInfo();
+            cout << "Código QR: " << codigo -> qr << endl;
+        }
+
+        void escanearQr(int codigo, float cantidad, IFormaPago *otro) override{
+            if (codigo  == otro -> getCodigoqr()){
+                aumentarSaldo(cantidad);
+                otro -> disminuirSaldo(cantidad);
+            }
+            else{
+                cout << "Código QR incorrecto" << endl;
+            }
+        }
+
+        void depositarCelular(int celular, float cantidad, IFormaPago *otro) override{
+            if (celular == otro -> getCelular()){
+                aumentarSaldo(cantidad);
+                otro -> disminuirSaldo(cantidad);
+            }
+            else{
+                cout << "Celular incorrecto" << endl;
+            }
+
+        }
+            
+};
+
+class Plin : public IFormaPago{
+    private:
+        void aumentarSaldo(float cantidad) override {
+            capital += cantidad;
+        }
+        void disminuirSaldo(float cantidad) override{
+            capital -= cantidad;
+        }
+    public:
+
+        Plin(Banco *_banco, int _celular){
+            this -> codigo = new CodigoQr();
+            this -> cuenta_bancaria = _banco;
+            this -> celular = _celular;
+        }
+        void depositar() override{
+            capital = cuenta_bancaria->depositar();
+        }
+
+        void getInfo() override {
+            cout << "Capital del yape: " << capital << endl;
+            cuenta_bancaria -> getInfo();
+            cout << "Código QR: " << codigo -> qr << endl;
+        }
+
+        void escanearQr(int codigo, float cantidad, IFormaPago *otro) override{
+            if (codigo  == otro -> getCodigoqr()){
+                aumentarSaldo(cantidad);
+                otro -> disminuirSaldo(cantidad);
+            }
+            else{
+                cout << "Código QR incorrecto" << endl;
+            }
+        }
+
+        void depositarCelular(int celular, float cantidad, IFormaPago *otro) override{
+            if (celular == otro -> getCelular()){
+                aumentarSaldo(cantidad);
+                otro -> disminuirSaldo(cantidad);
+            }
+            else{
+                cout << "Celular incorrecto" << endl;
+            }
+
+        }
+};
+
+vector<Banco*> bancos;
+vector<Yape*> yapes;
+vector<Plin*> plines;
 
 int main(){
+    /*
     srand(time(NULL));
-    Yape *yape = new Yape(new Banco(1000, 3379));
-    Yape *yape2 = new Yape(new Banco(1000, 6078));
-    yape -> depositar();
-    yape2 -> depositar();
+    do{
+        switch (menu())
+        {
+        case 9:
 
-    yape -> getInfo();
-    yape2 -> getInfo();
-
-    int codigo;
-    cout << "Ingrese el código QR de la otra cuenta (2): ";
-    cin >> codigo;
-    cout << "Ingrese la cantidad a transferir: ";
-    float cantidad;
-    cin >> cantidad;
-    yape -> escanearQr(codigo, cantidad, yape2);
-    cout << "__________________\n"; 
-    yape -> getInfo();
-    yape2 -> getInfo();
-
-    exit(0);
+        case 1:
+            char op;
+            do{
+                cout << "Ingrese su Yape/banco (S) Iniciar Sesion (N) Registrarse al banco/Yape: ";
+                cin >> op;
+                if (op == 'S' || op == 's')  iniciar_bancoYAPE();
+                else if (op == 'N' || op == 'n' ) crear_banco();
+                else continue;
+                break; 
+            } while (1);
+            break;
+        case 2:
+            do{
+                cout << "Ingrese su Plin/banco (S) Iniciar Sesion (N) Registrarse al banco/Yape: ";
+                cin >> op;
+                if (op == 'S' || op == 's')  iniciar_bancoPLIN();
+                else if (op == 'N' || op == 'n' ) crear_banco();
+                else continue;
+                break; 
+            } while (1);
+            break;
+        default:
+            break;
+        }
+    } while (1);
+    exit(0)
+    */
 }
+int menu(){
+    cout << "Agregar Yape        ----------------- 1" << endl;
+    cout << "Agregar Plin        ----------------- 2" << endl;
+    cout << "Opciones Yape       ----------------- 3" << endl;
+    cout << "Opciones Plin       ----------------- 4" << endl;
+    cout << "                                       (9)opciones banco" << endl;
+    int opcion = getInputInt();
+    return opcion;
+}
+
+int iniciar_bancoYAPE(){
+    int dni;
+    cout << "Ingrese su DNI para iniciar sesión: ";
+    cin >> dni;
+    cout << "Ingrese su celular: ";
+    int celular;
+    cin >> celular;
+    for (int i = 0; i < bancos.size(); i++){
+        if (bancos[i] -> getDni() == dni){
+            cout << "Se ha conectado con Yape" << endl;
+            Yape *yape = new Yape(bancos[i], celular);
+            yapes.push_back(yape);
+            return 1;
+        }
+    }
+    cout << "No se ha conectado con Yape" << endl;
+    return 0;
+}
+
+
+int iniciar_bancoPLIN(){
+    int dni;
+    cout << "Ingrese su DNI para iniciar sesión: ";
+    cin >> dni;
+    cout << "Ingrese su celular: ";
+    int celular;
+    cin >> celular;
+    for (int i = 0; i < bancos.size(); i++){
+        if (bancos[i] -> getDni() == dni){
+            cout << "Se ha conectado con Yape" << endl;
+            Plin *plin = new Plin(bancos[i], celular);
+            plines.push_back(plin);
+            return 1;
+        }
+    }
+    cout << "No se ha conectado con Yape" << endl;
+    return 0;
+}
+
+void crear_banco(){
+    int dni; 
+    cout << "Ingrese su DNI para registrarse al banco: ";
+    cin >> dni;
+    Banco *banco = new Banco(dni);
+    bancos.push_back(banco);
+}
+
+int menu_yape(){
+    cout << "Depositar a yape dinero del banco     ----------------- 1" << endl;
+    cout << "Depositar otro yape o plin por numero ----------------- 2" << endl;
+    cout << "Escanear QR                           ----------------- 3" << endl;
+    cout << "Ver información                       ----------------- 3" << endl;
+    int opcion = getInputInt();
+    return opcion;
+}
+
+/*
+void opcionesBanco(){
+    cout << "Ingrese el qr del dueño de la cuenta: ";
+    int qr = getInputInt();
+    in
+    for (int i = 0; i < yapes.size(); i++){
+        if (yapes[i] -> getQR() == qr){
+            cout << "se encontro el usuario\n";
+            int ifuser = 1;
+            break;
+        }
+    }
+    if(ifuser)
+    
+    cout << "Agregar plata O.O          3" << endl;
+    cout << "Quitar plata por impuestos 2" << endl;
+    int opc = getInputInt();
+    switch(opc){
+        case 1:
+
+    }
+}
+*/
