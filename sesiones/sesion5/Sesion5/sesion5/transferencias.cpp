@@ -9,8 +9,10 @@
 using namespace std;
 
 int menu();
-int iniciar_banco();
+int iniciar_bancoYAPE();
 void crear_banco();
+int iniciar_bancoPLIN();
+void opcionesBanco();
 int menu_plin();
 int menu_banco();
 
@@ -106,6 +108,9 @@ class Yape : public IFormaPago{
             this -> cuenta_bancaria = _banco;
             this -> celular = _celular;
         }
+        int getQR(){
+            return codigo -> qr;
+        }
 
         void depositar() override{
             capital = cuenta_bancaria->depositar();
@@ -192,26 +197,38 @@ vector<Yape*> yapes;
 vector<Plin*> plines;
 
 int main(){
+
     srand(time(NULL));
     do{
         switch (menu())
         {
+        case 9:
+
         case 1:
             char op;
             do{
                 cout << "Ingrese su Yape/banco (S) Iniciar Sesion (N) Registrarse al banco/Yape: ";
                 cin >> op;
-                if (op == 'S' || op == 's')  iniciar_banco();
+                if (op == 'S' || op == 's')  iniciar_bancoYAPE();
                 else if (op == 'N' || op == 'n' ) crear_banco();
                 else continue;
-                break;  
+                break; 
             } while (1);
-        
+            break;
+        case 2:
+            do{
+                cout << "Ingrese su Plin/banco (S) Iniciar Sesion (N) Registrarse al banco/Yape: ";
+                cin >> op;
+                if (op == 'S' || op == 's')  iniciar_bancoPLIN();
+                else if (op == 'N' || op == 'n' ) crear_banco();
+                else continue;
+                break; 
+            } while (1);
+            break;
         default:
             break;
         }
     } while (1);
-    
     exit(0);
 }
 int menu(){
@@ -219,11 +236,12 @@ int menu(){
     cout << "Agregar Plin        ----------------- 2" << endl;
     cout << "Opciones Yape       ----------------- 3" << endl;
     cout << "Opciones Plin       ----------------- 4" << endl;
+    cout << "                                       (9)opciones banco" << endl;
     int opcion = getInputInt();
     return opcion;
 }
 
-int iniciar_banco(){
+int iniciar_bancoYAPE(){
     int dni;
     cout << "Ingrese su DNI para iniciar sesión: ";
     cin >> dni;
@@ -235,6 +253,26 @@ int iniciar_banco(){
             cout << "Se ha conectado con Yape" << endl;
             Yape *yape = new Yape(bancos[i], celular);
             yapes.push_back(yape);
+            return 1;
+        }
+    }
+    cout << "No se ha conectado con Yape" << endl;
+    return 0;
+}
+
+
+int iniciar_bancoPLIN(){
+    int dni;
+    cout << "Ingrese su DNI para iniciar sesión: ";
+    cin >> dni;
+    cout << "Ingrese su celular: ";
+    int celular;
+    cin >> celular;
+    for (int i = 0; i < bancos.size(); i++){
+        if (bancos[i] -> getDni() == dni){
+            cout << "Se ha conectado con Yape" << endl;
+            Plin *plin = new Plin(bancos[i], celular);
+            plines.push_back(plin);
             return 1;
         }
     }
@@ -256,5 +294,29 @@ int menu_yape(){
     cout << "Escanear QR                           ----------------- 3" << endl;
     cout << "Ver información                       ----------------- 3" << endl;
     int opcion = getInputInt();
-    return 0;
+    return opcion;
 }
+
+/*
+void opcionesBanco(){
+    cout << "Ingrese el qr del dueño de la cuenta: ";
+    int qr = getInputInt();
+    in
+    for (int i = 0; i < yapes.size(); i++){
+        if (yapes[i] -> getQR() == qr){
+            cout << "se encontro el usuario\n";
+            int ifuser = 1;
+            break;
+        }
+    }
+    if(ifuser)
+    
+    cout << "Agregar plata O.O          3" << endl;
+    cout << "Quitar plata por impuestos 2" << endl;
+    int opc = getInputInt();
+    switch(opc){
+        case 1:
+
+    }
+}
+*/
