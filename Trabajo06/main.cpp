@@ -1,7 +1,5 @@
-#include "dependencias/ifInt.h"
-#include "dependencias/ifFloat.h"
+#include "dependencias/validacion.h"
 #include "dependencias/getStr.h"
-#include "dependencias/sha256.h"
 
 #include <iostream>
 #include <fstream>
@@ -58,9 +56,9 @@ istream& operator>>(istream& in, IProducto& producto){
     in.ignore();
     getline(in, producto.nombre);
     cout << "Ingrese el precio: ";
-    producto.precio = getInputFloat();
+    producto.precio = getValidaNum<float>();
     cout << "Ingrese la cantidad: ";
-    producto.cantidad = getInputInt();
+    producto.cantidad = getValidaNum<int>();
     return in;
 }
 
@@ -90,6 +88,7 @@ class Libro: public IProducto{
                 cout << "No se puede abrir el archivo" << endl;
             }
         }
+        ~Libro(){}
         friend istream& operator>>(istream& in, Libro& libro);
 };
 istream& operator>>(istream& in, Libro& libro){
@@ -128,6 +127,7 @@ class Electronico: public IProducto{
                 cout << "No se puede abrir el archivo" << endl;
             }
         }
+        ~Electronico(){}
         friend istream& operator>>(istream& in, Electronico& electronico);
 };
 istream& operator>>(istream& in, Electronico& electronico){
@@ -166,6 +166,7 @@ class Ropa: public IProducto{
                 cout << "No se puede abrir el archivo" << endl;
             }
         }
+        ~Ropa(){}
         friend istream& operator>>(istream& in, Ropa& ropa);
 };
 istream& operator>>(istream& in, Ropa& ropa){
@@ -197,7 +198,7 @@ void addProduct(){
     cout << "1. Libro" << endl;
     cout << "2. Electronico" << endl;
     cout << "3. Ropa" << endl;
-    short tipo = short(getInputInt());
+    short tipo = short(getValidaNum<int>());
     switch(tipo){
         case 1: {
             Libro* nuevoLibro = new Libro();
@@ -351,7 +352,7 @@ void menu(){
         cout << "4. Borrar cliente" << endl;
         cout << "5. Salir" << endl;
         cout << "Ingrese una opción: ";
-        opcion = short(getInputInt());
+        opcion = short(getValidaNum<int>());
         switch(opcion){
             case 1:
                 addProduct();
@@ -482,7 +483,7 @@ void aumentar(){
     cout << "Ingrese el nombre del producto: ";
     string nombre = getSTR(100);
     cout << "Ingrese la cantidad a aumentar: ";
-    int cantidad = getInputInt();
+    int cantidad = getValidaNum<int>();
 
     if (!aumentar(general_products, nombre, cantidad)) {
         cout << "Producto no encontrado." << endl;
