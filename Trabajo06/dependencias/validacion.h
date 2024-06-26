@@ -5,9 +5,11 @@
 #include <limits>
 using namespace std;
 
-float getInputFloat(){
+
+template<typename NM>
+NM getValidaNum(){
     do{
-        float numero;
+        NM numero;
         try {
             cout << "Ingrese una opción: ----------------- ";
             cin >> numero;
