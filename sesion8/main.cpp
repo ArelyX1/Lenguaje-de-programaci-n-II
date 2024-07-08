@@ -457,7 +457,7 @@ int main(){
             nombre[sizeof(nombre_arr) - 1] = '\0';
             strncpy(codigo_arr, codigo.c_str(), sizeof(codigo));
             codigo[sizeof(codigo_arr) - 1] = '\0';
-            contenedorUsuarios.insertar(codigo, new Usuario(nombre_arr, codigo_arr, stoi(edad)));
+            //contenedorUsuarios.insertar(codigo, new Usuario(nombre_arr, codigo_arr, stoi(edad)));
         }
         file.close();
     }
