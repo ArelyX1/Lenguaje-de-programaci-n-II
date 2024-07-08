@@ -403,6 +403,9 @@ int main(){
         }
         file.close();
     }
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    //todo agregar el archivo al contenedor
+    /*
     {
         ifstream file("biblioteca.csv", ios::in);
         if (!file.is_open()) {
@@ -429,8 +432,8 @@ int main(){
                 tipoAcceso = TipoAcceso::CD;
             else
                 throw invalid_argument("Opcion invalida");
-            char autor_arr[21];
-            char isbn_arr[14];
+            char autor_arr[20];
+            char isbn_arr[13];
             strncpy(autor_arr, autor.c_str(), sizeof(autor));
             autor[sizeof(autor_arr) - 1] = '\0';
             strncpy(isbn_arr, isbn.c_str(), sizeof(isbn));
@@ -457,10 +460,11 @@ int main(){
             nombre[sizeof(nombre_arr) - 1] = '\0';
             strncpy(codigo_arr, codigo.c_str(), sizeof(codigo));
             codigo[sizeof(codigo_arr) - 1] = '\0';
-            //contenedorUsuarios.insertar(codigo, new Usuario(nombre_arr, codigo_arr, stoi(edad)));
+            contenedorUsuarios.insertar(codigo, new Usuario(nombre_arr, codigo_arr, stoi(edad)));
         }
         file.close();
     }
+    */
     /*
     Libro *lbro5 = new Libro("ElJujas", "123456789", "El li1231bro", "Fic123ción", 2022, TipoAcceso::SS);
     contenedorLibros.insertar("123456789", lbro5);
